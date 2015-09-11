@@ -15,7 +15,11 @@
 			$url="http://imgur.com/";
 			if(isset($_GET['url']))
 			{
-				$url=$_GET['url'];
+				$urltest=$_GET['url'];
+				if(substr(strtolower($urltest),0,4) == 'http')
+				{
+					$url=$urltest;
+				}
 			}
 			@$html=file_get_contents($url);
 			$doc=new DOMDocument();

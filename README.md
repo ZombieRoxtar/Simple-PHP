@@ -9,4 +9,3 @@ imgblob.php - (It's a working name.) Script that generates a numbered list of al
 
 jpg.php - This script displays supplied image. This is useful for images that are served with the wrong context type,
   making it viewable in the browser.
-
