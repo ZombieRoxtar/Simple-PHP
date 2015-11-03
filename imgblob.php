@@ -39,20 +39,32 @@
 					$src=$tags->item($i)->getAttribute('src');
 					if(substr(strtolower($src),0,4) != 'http')
 					{
-						/* If I'm to append HTTP://whatever then a leading / is needed */
-						if(substr(strtolower($src),0,1) != '/')
-						{
-							$src='/'.$src;
-						}
 						if($doOnce)
 						{
 							/* I need only the protocol/host portion for these pesky URLs */
-							$host=substr($url,0,strpos($url,'/',8));
+							$firstDir=strpos($url,'/',8);
+							$host=substr($url,0,$firstDir);
 							if($host == '')
 							{
 								$host=$url;
 							}
 							$doOnce=false;
+						}
+						/* If I'm to append HTTP://whatever then a leading / is needed */
+						if(substr(strtolower($src),0,1) != '/')
+						{
+							$prepend='/';
+							/* Do I need to prepend a directory from the main URL? */
+							$lastslash=strrpos($url,'/');
+							if($lastslash===strlen($url)-1)
+								$lastslash=strrpos($url,'/',-2);
+							if($lastslash!==strpos($url,'/',strpos($url,'/')+1))
+							{
+								$prepend.=substr($url,$firstDir,$lastslash).'/';
+							}
+							$src=$prepend.$src;
+							/* That whole thing feels hacky and sometimes I get doulbe slashes,
+								but the browser doesn't to mind and those could be cleaned here */
 						}
 						$src=$host.$src;
 					}
